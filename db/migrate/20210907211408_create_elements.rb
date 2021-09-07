@@ -1,6 +1,6 @@
-class CreateElementos < ActiveRecord::Migration[6.1]
+class CreateElements < ActiveRecord::Migration[6.1]
   def change
-    create_table :elementos do |t|
+    create_table :elements do |t|
       t.string :name
       t.float :atomic_mass
       t.integer :number
