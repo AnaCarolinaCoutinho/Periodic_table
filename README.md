@@ -24,7 +24,7 @@ Para montar um elemento corretamente na tabela, você precisará dos campos abai
 * name: Nome do elemento
 * atomic_mass: Massa atômica
 * number: Número atômico
-* period: Período da tabela onde aparece o elmento
+* period: Período da tabela onde aparece o elemento
 * category: Categoria/família do elemento
 * symbol: Símbolo do elemento
 * xpos: Posição no eixo x da tabela
