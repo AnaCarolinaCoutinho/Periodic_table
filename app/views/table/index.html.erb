@@ -1,17 +1,1251 @@
-<div class="container">
-  <div class="row">
-    <ul>
-    <% @elements.each do |element| %>
-      <li>
-        <%= element.name %>
-        <%= element.number %>-
-        <%= element.period %>,
-        <%= element.atomic_mass %>
-      </li>
-    <% end %>
-    </ul>
+<style> 
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,400,700');
+
+/* GLOBAL STYLES */
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+	box-sizing:border-box;	
+}
+	
+:root{
+	--bg-preto:rgb(0,0,0);
+	--nao-metal:rgb(180,210,100);
+	--gas-nobre:rgb(100,180,225);
+	--metal-alcalino:rgb(245,200,100);
+	--metal-alcalino-terroso:rgb(240,230,90);
+	--semimetal:rgb(110,200,190);
+	--halogenio:rgb(170,225,255);
+	--outros-metais:rgb(190,210,210);
+	--metal-transicao:rgb(245,175,175);
+	--lantanideo:rgb(150,225,225);
+	--actinidio:rgb(230,190,220);
+}
+
+body{
+	font:1em/1 'Montserrat', sans-serif;
+	color:rgb(255,255,255);
+	text-align:center;
+	padding:1em 5%;
+	background:var(--bg-preto);	
+}
+
+	
+/* FOREGROUND COLOR VARIABLES */
+.nao-metal{
+	color:var(--nao-metal);
+}
+	
+.gas-nobre{
+	color:var(--gas-nobre);
+}
+
+.metal-alcalino{
+	color:var(--metal-alcalino);
+}
+	
+.metal-alcalino-terroso{
+	color:var(--metal-alcalino-terroso);
+}
+	
+.semimetal{
+	color:var(--semimetal);
+}
+	
+.halogenio{
+	color:var(--halogenio);
+}
+	
+.outros-metais{
+	color:var(--outros-metais);
+}
+	
+.metal-transicao{
+	color:var(--metal-transicao);
+}
+	
+.lantanideo{
+	color:var(--lantanideo);
+}
+	
+.actinidio{
+	color:var(--actinidio);
+}
+
+	
+/* TYPOGRAPHY STYLES */
+h1{
+	margin:.5em 0;
+	font-size:calc(3vw + 2rem);
+	font-weight:100;
+	text-transform:uppercase;
+	letter-spacing:-.05em;
+}
+
+h2{
+	font-size:2em;
+}
+
+p:last-child{
+	font-size:.8em;	
+}
+
+
+/* GRID CONTAINER STYLES */
+main{
+	margin:auto;
+	max-width:45em;
+	display:flex;
+}
+
+#grid-container{
+	flex-grow:1;
+	min-width:7em;	
+}
+
+.col-hidden{
+	display:none;	
+}
+
+
+/* GRID CELL */
+section{
+	height:7em;
+	background:var(--bg-preto);	
+	border:.125rem solid;
+	border-radius:.25rem;	
+	line-height:1.25;
+	margin-bottom:.5em;
+	position:relative;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+}
+
+span{
+	font-size:.75em;
+	position:absolute;
+	top:.3em;
+	left:.5em;	
+}
+
+
+/* FOOTER */
+footer{
+	font-size:.8em;
+	text-align:left;	
+	flex-basis:13.5rem;
+	margin:-.25em 0 0 1em;
+}
+
+ul{
+	display:flex;
+	flex-wrap:wrap;
+  position:sticky;
+  top:1em;
+}
+
+li{
+	flex-basis:100%;
+	line-height:1.25;
+	margin-bottom:1em;	
+}
+
+li:before{
+	content:' ';
+	display:inline-block;
+	width:1em;
+	height:1em;
+	border:.125em solid;
+	border-radius:.125rem;	
+	margin-right:.5em;
+	position:relative;
+	top:.25em;
+}
+
+
+@media only screen and (min-width:92.5em){
+	@supports (display:grid){
+		
+		/* GLOBAL STYLES */
+		
+		body{
+			font-size:.65em;
+			padding:2em;	
+		}
+		
+		
+		/* GRID CONTAINER STYLES */
+	
+		main{
+			max-width:130.5em;
+			display:block;
+		}
+		
+		#grid-container{
+			display:grid;
+			grid-template-columns:repeat(18, 7em);
+			grid-gap:.25em;	
+		}
+			
+		.col-span16{
+			grid-column:span 16;
+		}
+			
+		.col-span10{
+			grid-column:span 10;
+		}
+			
+		.col-span3{
+			grid-column:span 3;
+		}
+			
+		.col-hidden{
+			display:block;
+			visibility:hidden;
+		}
+			
+		
+		/* GRID CELL */
+		
+		section{
+			margin:0;
+		}
+			
+		section:hover{
+			transition:.2s;
+			transform:scale(1.5);
+			cursor:pointer;
+			z-index:2;
+		}
+		
+		
+		/* FOOTER */
+	
+		footer{
+			font-size:1em;
+			width:100%;
+			margin:2em 0;
+		}
+		
+		ul{
+			justify-content:center;
+		}
+		
+		li{
+			flex-basis:auto;
+			margin-bottom:0;	
+		}
+		
+		li + li{
+			margin-left:2em;	
+		}	
+	}
+}
+
+@media only screen and (min-width:102.5em){
+	/* GLOBAL STYLES */
+		
+		body{
+			font-size:.75em;	
+		}	
+}
+</style>
+
+<h1>Tabela Periódica dos Elementos</h1>
+<main>
+  <div id="grid-container">
+    <!-- LINHA 1 -->
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 1)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="col-hidden col-span16"></section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 2)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 2 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 3)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+      <% element = Element.find_by(number: 4)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="col-hidden col-span10"></section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 5)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 6)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 7)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 8)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 9)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 10)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 3 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 11)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+       <% element = Element.find_by(number: 12)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="col-hidden col-span10"></section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 12)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 14)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 15)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 16)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 17)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 18)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 4 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 19)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+     <% element = Element.find_by(number: 20)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 21)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 22)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 23)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 24)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 25)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 26)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+     <% element = Element.find_by(number: 27)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 28)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 29)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 30)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 31)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 32)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 33)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="nao-metal">
+      <% element = Element.find_by(number: 34)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 35)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 36)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 5 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 37)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+      <% element = Element.find_by(number: 38)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 39)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 40)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 41)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 42)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 43)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 44)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 45)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 46)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 47)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 48)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 49)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 50)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 51)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 52)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 53)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 54)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 6 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 55)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+      <% element = Element.find_by(number: 56)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <span>57 - 71</span>
+      <h2>* *</h2>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 72)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 73)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 74)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 75)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 76)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 77)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 78)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 79)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 80)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 81)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 82)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 83)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="semimetal">
+      <% element = Element.find_by(number: 84)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 85)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 86)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 7 -->
+    <section class="metal-alcalino">
+      <% element = Element.find_by(number: 87)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-alcalino-terroso">
+      <% element = Element.find_by(number: 88)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <span>89 - 103</span>
+      <h2>* *</h2>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 104)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 105)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 106)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 107)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 108)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 109)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 110)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 111)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="metal-transicao">
+      <% element = Element.find_by(number: 112)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 113)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 114)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 115)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="outros-metais">
+      <% element = Element.find_by(number: 116)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="halogenio">
+      <% element = Element.find_by(number: 117)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="gas-nobre">
+      <% element = Element.find_by(number: 118)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 8 -->
+    <section class="col-hidden col-span3"></section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 57)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 58)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 59)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 60)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 61)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 62)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 63)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 64)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 65)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 66)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 67)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 68)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 69)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 70)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="lantanideo">
+      <% element = Element.find_by(number: 71)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <!-- LINHA 9 -->
+    <section class="col-hidden col-span3"></section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 89)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 90)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 91)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 92)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 93)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 94)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 95)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 96)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 97)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 98)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 99)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 100)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 101)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 102)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
+
+    <section class="actinidio">
+      <% element = Element.find_by(number: 103)%>
+      <span><%= element.number%></span>
+      <h2><%= element.symbol%></h2>
+      <p><%= element.name%></p>
+      <p><%= element.atomic_mass%></p>
+    </section>
   </div>
-</div>
+
+  <!-- FOOTER -->
+  <footer>
+    <ul>
+      <li class="nao-metal">Não Metais</li>
+      <li class="gas-nobre">Gases Nobres</li>
+      <li class="metal-alcalino">Metais Alcalinos</li>
+      <li class="metal-alcalino-terroso">Metais Alcalino-Terrosos</li>
+      <li class="semimetal">Semimetais</li>
+      <li class="halogenio">Halogênios</li>
+      <li class="outros-metais">Outros Metais</li>
+      <li class="metal-transicao">Metais de Transição</li>
+      <li class="lantanideo">Lantanídeos</li>
+      <li class="actinidio">Actinídios</li>
+    </ul>
+  </footer>
+</main>
 
 
 
